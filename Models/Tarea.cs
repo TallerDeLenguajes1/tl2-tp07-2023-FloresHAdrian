@@ -7,7 +7,9 @@ public enum Estado{
     EnProgreso,
     Completada
 }
-public class Tarea {    
+public class Tarea {
+ 
+
     public int Id {get;set;}
     public string Titulo{get;set;}
     public string Descripcion {get;set;}
