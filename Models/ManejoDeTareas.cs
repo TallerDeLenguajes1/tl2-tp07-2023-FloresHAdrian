@@ -5,7 +5,9 @@ public class ManejoDeTareas
 
     private AccesoADatos accesoTareas;
 
-
+    public ManejoDeTareas(AccesoADatos accesoTareas){
+        this.accesoTareas = accesoTareas;
+    }
 
     public bool AddTarea(Tarea tarea)
     {
@@ -27,6 +29,15 @@ public class ManejoDeTareas
         return tareas.FirstOrDefault(t => t.Id == id);
     }
 
+    public List<Tarea> GetTareas(){
+        return accesoTareas.Obtener();
+    }
+
+    public List<Tarea> GetTareasCompletadas(){
+        var tareas = accesoTareas.Obtener();
+        return tareas.FindAll(t=> t.Estado == Estado.Completada);
+    }
+
     public bool UpdateTarea(Tarea tareaActulizada){
         var resultado = false;
         var listaTareas = accesoTareas.Obtener();
@@ -36,6 +47,19 @@ public class ManejoDeTareas
             tarea.Estado = tareaActulizada.Estado;
             tarea.Descripcion = tareaActulizada.Descripcion;
             tarea.Titulo = tareaActulizada.Titulo;
+            accesoTareas.Guardar(listaTareas);
+            resultado = true;
+        }
+        return resultado;
+    }
+
+    public bool DeleteTarea(int idTarea){
+        var resultado = false;
+        var listaTareas = accesoTareas.Obtener();
+        var tarea = listaTareas.FirstOrDefault( t => t.Id == idTarea);
+        if ( tarea !=null)
+        {
+            listaTareas.Remove(tarea);
             accesoTareas.Guardar(listaTareas);
             resultado = true;
         }
